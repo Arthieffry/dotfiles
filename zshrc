@@ -1,5 +1,9 @@
 # ~/.zshrc — source: ~/code/Arthieffry/dotfiles/zshrc
 
+# Homebrew avant les outils fournis par macOS (python3, pip3, git...)
+typeset -U path
+path=(/opt/homebrew/bin /opt/homebrew/sbin $path)
+
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.mammouth/bin:$PATH"
 
@@ -8,10 +12,6 @@ export HOMEBREW_NO_ANALYTICS=1
 # rbenv
 export PATH="${HOME}/.rbenv/bin:${PATH}"
 type -a rbenv > /dev/null && eval "$(rbenv init - zsh)"
-
-# pyenv
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-type -a pyenv > /dev/null && eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init -)"
 
 # Node (fnm) : change de version selon .nvmrc ou .node-version
 type -a fnm > /dev/null && eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
@@ -23,8 +23,7 @@ export PATH="${PATH}:/usr/local/sbin"
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export BUNDLER_EDITOR=cursor
-export EDITOR=cursor
-export PYTHONBREAKPOINT=ipdb.set_trace
+export EDITOR="cursor --wait"
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # Historique

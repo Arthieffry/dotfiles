@@ -1,0 +1,21 @@
+# Shell
+brew "starship"
+brew "fnm"
+brew "fzf"
+brew "zoxide"
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
+
+# Développement
+brew "git"
+brew "gh"
+brew "heroku"
+brew "scalingo"
+brew "rbenv"
+brew "ruby-build"
+brew "python"
+brew "postgresql@14"
+brew "redis"
+brew "imagemagick"
+brew "jq"
+brew "wget"

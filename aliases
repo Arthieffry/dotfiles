@@ -17,10 +17,7 @@ alias gplo='git pull origin'
 alias gplom="git pull origin master"
 alias gplos='git pull origin staging'
 alias gd='git diff'
-alias gdf='git diff'
 alias wapp='cd ~/code/Arthieffry/workelo-app/'
-alias wadm='cd ~/code/Arthieffry/workelo-admin/'
-alias wapi='cd ~/code/Arthieffry/workelo-api/'
 alias aliases="cursor ~/.aliases"
 alias hrcp="heroku run 'bundle exec rails c -- --nomultiline' --remote production"
 alias hrcpp="heroku run 'bundle exec rails c -- --nomultiline' --remote preprod"
@@ -29,5 +26,6 @@ alias hrcpbig="heroku run 'bundle exec rails c -- --nomultiline' --remote produc
 alias hrcsbig="heroku run 'bundle exec rails c -- --nomultiline' --remote staging --size=performance-l"
 alias hlp='heroku logs -t --remote production'
 alias hls='heroku logs -t --remote staging'
+alias hrclab="scalingo --app lab-workelo run 'bundle exec rails c -- --nomultiline'"
 alias rrg='rails routes | grep'
 alias findpassword='security find-generic-password -ga'

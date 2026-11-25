@@ -1,75 +1,39 @@
 #!/bin/zsh
+# Installe les paquets du Brewfile et crée les liens vers ce dépôt.
+set -e
 
-# Define a function which rename a `target` file to `target.backup` if the file
-# exists and if it's a 'real' file, ie not a symlink
-backup() {
-  target=$1
-  if [ -e "$target" ]; then
-    if [ ! -L "$target" ]; then
-      mv "$target" "$target.backup"
-      echo "-----> Moved your old $target config file to $target.backup"
-    fi
+DOTFILES="${0:A:h}"
+
+if (( ! $+commands[brew] )) && [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+if (( ! $+commands[brew] )); then
+  echo "Installe d'abord Homebrew : https://brew.sh"
+  exit 1
+fi
+
+brew bundle --file="$DOTFILES/Brewfile"
+
+# Crée le lien $2 vers $1, en sauvegardant ce qui se trouve déjà en $2
+link() {
+  local src=$1 dest=$2
+  if [[ -L $dest && ${dest:A} == ${src:A} ]]; then
+    return
   fi
+  mkdir -p "${dest:h}"
+  if [[ -e $dest || -L $dest ]]; then
+    local backup="$dest.backup-$(date +%Y%m%d%H%M%S)"
+    mv "$dest" "$backup"
+    echo "-----> Sauvegarde : $backup"
+  fi
+  ln -s "$src" "$dest"
+  echo "-----> Lien : $dest"
 }
 
-symlink() {
-  file=$1
-  link=$2
-  if [ ! -e "$link" ]; then
-    echo "-----> Symlinking your new $link"
-    ln -s $file $link
-  fi
-}
-
-# For all files `$name` in the present folder except `*.sh`, `README.md`, `settings.json`,
-# and `config`, backup the target file located at `~/.$name` and symlink `$name` to `~/.$name`
-for name in aliases gitconfig irbrc rspec zprofile zshrc; do
-  if [ ! -d "$name" ]; then
-    target="$HOME/.$name"
-    backup $target
-    symlink $PWD/$name $target
-  fi
+for name in aliases gitconfig irbrc rspec zshrc; do
+  link "$DOTFILES/$name" "$HOME/.$name"
 done
 
-# Install zsh-syntax-highlighting plugin
-CURRENT_DIR=`pwd`
-ZSH_PLUGINS_DIR="$HOME/.oh-my-zsh/custom/plugins"
-mkdir -p "$ZSH_PLUGINS_DIR" && cd "$ZSH_PLUGINS_DIR"
-if [ ! -d "$ZSH_PLUGINS_DIR/zsh-syntax-highlighting" ]; then
-  echo "-----> Installing zsh plugin 'zsh-syntax-highlighting'..."
-  git clone https://github.com/zsh-users/zsh-autosuggestions
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting
-fi
-cd "$CURRENT_DIR"
+link "$DOTFILES/cursor_settings.json" "$HOME/Library/Application Support/Cursor/User/settings.json"
 
-# Symlink VS Code settings and keybindings to the present `settings.json` and `keybindings.json` files
-# If it's a macOS
-if [[ `uname` =~ "Darwin" ]]; then
-  CODE_PATH=~/Library/Application\ Support/Code/User
-# Else, it's a Linux
-else
-  CODE_PATH=~/.config/Code/User
-  # If this folder doesn't exist, it's a WSL
-  if [ ! -e $CODE_PATH ]; then
-    CODE_PATH=~/.vscode-server/data/Machine
-  fi
-fi
-
-for name in settings.json keybindings.json; do
-  target="$CODE_PATH/$name"
-  backup $target
-  symlink $PWD/$name $target
-done
-
-# Symlink SSH config file to the present `config` file for macOS and add SSH passphrase to the keychain
-if [[ `uname` =~ "Darwin" ]]; then
-  target=~/.ssh/config
-  backup $target
-  symlink $PWD/config $target
-  ssh-add -K ~/.ssh/id_ed25519
-fi
-
-# Refresh the current terminal with the newly installed configuration
-exec zsh
-
-echo "👌 Carry on with git setup!"
+echo "Terminé. Ouvre un nouveau terminal."

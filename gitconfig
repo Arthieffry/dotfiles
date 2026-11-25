@@ -11,7 +11,7 @@
 
 [core]
   pager = less -FRSX
-  editor = code --wait
+  editor = cursor --wait
 
 [alias]
   co = checkout
@@ -46,7 +46,7 @@
   unstage = reset HEAD --
 
 [help]
-  autocorrect = 1
+  autocorrect = prompt
 
 [push]
 	default = simple
