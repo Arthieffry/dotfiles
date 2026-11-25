@@ -59,10 +59,12 @@
   name = Arthur Thieffry
 
 [pull]
-  rebase = false
+	rebase = true
 
 [init]
   defaultBranch = master
 
 [credential "https://git.heroku.com"]
 	helper = !heroku git:credentials
+[rebase]
+	autoStash = true
