@@ -1,9 +1,8 @@
 # Get External IP / local IPs
+alias code="cursor"
 alias ip="curl ipinfo.io/ip"
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
-alias speedtest="wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test10.zip"
-# Quickly serve the current directory as HTTP
-alias serve='ruby -run -e httpd . -p 8000'  # Or python -m SimpleHTTPServer :)
+alias speedtest="networkQuality"
 alias ber='bundle exec rspec'
 alias gst='git status'
 alias gc='git commit'
@@ -22,7 +21,7 @@ alias gdf='git diff'
 alias wapp='cd ~/code/Arthieffry/workelo-app/'
 alias wadm='cd ~/code/Arthieffry/workelo-admin/'
 alias wapi='cd ~/code/Arthieffry/workelo-api/'
-alias aliases='code ~/code/Arthieffry/dotfiles/aliases'
+alias aliases="cursor ~/.aliases"
 alias hrcp="heroku run 'bundle exec rails c -- --nomultiline' --remote production"
 alias hrcpp="heroku run 'bundle exec rails c -- --nomultiline' --remote preprod"
 alias hrcs="heroku run 'bundle exec rails c -- --nomultiline' --remote staging"
@@ -31,5 +30,4 @@ alias hrcsbig="heroku run 'bundle exec rails c -- --nomultiline' --remote stagin
 alias hlp='heroku logs -t --remote production'
 alias hls='heroku logs -t --remote staging'
 alias rrg='rails routes | grep'
-alias wbps='webpack-dev-server'
 alias findpassword='security find-generic-password -ga'
